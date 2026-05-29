@@ -1,0 +1,69 @@
+# eDNA Database Comparison Code
+
+This repository contains the R scripts used for the eDNA database comparison manuscript. The scripts have been cleaned for public release: comments are in English, repeated code has been moved into reusable functions, and local absolute paths have been replaced by configurable data and output directories.
+
+## Repository Layout
+
+| Script | Purpose |
+| --- | --- |
+| `scripts/01_bray_curtis_similarity.R` | Calculates site-level Bray-Curtis similarity between morphology and eDNA family-level matrices. |
+| `scripts/02_family_venn_diagram.R` | Draws an area-proportional family-level Euler/Venn diagram for CMBL, NCBI, and morphology datasets. |
+| `scripts/03_loocv_random_forest_wqi.R` | Runs random forest LOOCV for WQI prediction with training-set CSS normalization and fold-wise feature selection. |
+| `scripts/04_wqi_regression.R` | Plots measured vs. predicted WQI, exports model metrics, and optionally runs weighted Kappa and environmental correlation plots. |
+| `scripts/05_site_rarefaction_curves.R` | Draws site-level rarefaction curves for raw, CMBL-annotated, and NCBI-annotated OTU matrices. |
+| `scripts/06_otu_importance_barplot.R` | Draws horizontal bar plots for important OTUs, colored by class. |
+| `scripts/_shared.R` | Shared helpers for package checks, paths, data loading, and simple metrics. |
+
+## Data
+
+Raw data and manuscript files are not included in this code repository. By default, scripts look for input files in a local `data/` folder and write outputs to `outputs/<analysis-name>/`.
+
+You can also set environment variables before running the scripts:
+
+```r
+Sys.setenv(EDNA_DATA_DIR = "path/to/input/data")
+Sys.setenv(EDNA_OUTPUT_DIR = "path/to/output/folder")
+```
+
+Several scripts also support file-specific environment variables, such as `MORPHOLOGY_FAMILY_FILE`, `EDNA_FAMILY_FILE`, `CMBL_FAMILY_FILE`, `WQI_OTU_FILE`, `WQI_PREDICTION_FILE`, and `OTU_IMPORTANCE_FILE`.
+
+## Packages
+
+Install the required R packages before running the scripts:
+
+```r
+install.packages(c(
+  "dplyr",
+  "ggplot2",
+  "ggpubr",
+  "gridExtra",
+  "irr",
+  "RColorBrewer",
+  "ranger",
+  "vegan",
+  "eulerr"
+))
+
+if (!requireNamespace("BiocManager", quietly = TRUE)) {
+  install.packages("BiocManager")
+}
+
+BiocManager::install(c("metagenomeSeq", "Biobase"))
+```
+
+The environmental-correlation section of `04_wqi_regression_and_kappa.R` additionally uses `mice` when environmental input files are available.
+
+## Example
+
+From the repository root:
+
+```r
+source("scripts/01_bray_curtis_similarity.R")
+```
+
+or from a terminal:
+
+```sh
+Rscript scripts/01_bray_curtis_similarity.R
+```
+
