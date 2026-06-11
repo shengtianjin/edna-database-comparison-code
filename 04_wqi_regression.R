@@ -16,11 +16,11 @@ output_dir <- output_dir_from_env(project_dir, "wqi_regression_and_kappa")
 
 prediction_file <- Sys.getenv(
   "WQI_PREDICTION_FILE",
-  unset = file.path(data_dir, "未注释-WQI后25th预测值-前200重要OTU.csv")
+  unset = file.path(data_dir, "Taxonomy-free_WQI_25th_top_200_importance_OTU.csv")
 )
 
-wqi_env_file <- Sys.getenv("WQI_ENV_FILE", unset = file.path(data_dir, "WQI-理化(删0).csv"))
-env_file <- Sys.getenv("ENV_FILE", unset = file.path(data_dir, "理化(删0).csv"))
+wqi_env_file <- Sys.getenv("WQI_ENV_FILE", unset = file.path(data_dir, "WQI.csv"))
+env_file <- Sys.getenv("ENV_FILE", unset = file.path(data_dir, "WQI.csv"))
 classification_scheme <- Sys.getenv("WQI_CLASSIFICATION_SCHEME", unset = "none")
 
 plot_prediction_scatter <- function(data, output_dir) {
