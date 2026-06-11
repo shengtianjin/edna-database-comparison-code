@@ -20,20 +20,6 @@ top_n <- as.integer(Sys.getenv("TOP_N_OTUS", unset = "200"))
 num_trees <- as.integer(Sys.getenv("RF_NUM_TREES", unset = "500"))
 random_seed <- as.integer(Sys.getenv("RF_RANDOM_SEED", unset = "1234"))
 
-if (is.na(top_n) || top_n < 1) {
-  stop("TOP_N_OTUS must be a positive integer.", call. = FALSE)
-}
-
-if (is.na(num_trees) || num_trees < 1) {
-  stop("RF_NUM_TREES must be a positive integer.", call. = FALSE)
-}
-
-data <- read_csv_checked(input_file, header = TRUE, row.names = 1, check.names = FALSE)
-
-if (!response_row %in% rownames(data)) {
-  stop("Response row not found: ", response_row, call. = FALSE)
-}
-
 y <- as.numeric(data[response_row, ])
 otu_raw <- data[rownames(data) != response_row, , drop = FALSE]
 otu_raw <- as.data.frame(otu_raw, check.names = FALSE)
